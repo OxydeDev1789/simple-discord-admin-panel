@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Discord Admin Panel</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <nav class="sidebar">
+      <ul>
+        <li class="menu-item" data-section="users">Users</li>
+        <li class="menu-item" data-section="roles">Role</li>
+        <li class="menu-item" data-section="servers">Server</li>
+        <li class="menu-item" data-section="settings">Settings</li>
+        <div id="logout" class="logout-button">Se déconnecter</div>
+      </ul>
+    </nav>
+    <main class="content">
+      <div id="users" class="section">
+        <h2>Users</h2>
+        <div id="users-list"></div>
+      </div>
+      <div id="roles" class="section">
+        <h2>Role</h2>
+        <div id="roles-list"></div>
+      </div>
+      <div id="servers" class="section">
+        <h2>Server</h2>
+        <div id="servers-list"></div>
+      </div>
+      <div id="settings" class="section">
+        <h2>Settings</h2>
+        <div id="settings-container"></div>
+      </div>
+    </main>
+  </div>
+
+  <div id="popup" class="popup">
+    <div id="popup-content" class="popup-content">
+      <h3></h3>
+      <button id="confirm" class="confirm">Oui</button>
+      <button id="cancel" class="cancel">Non</button>
+    </div>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
