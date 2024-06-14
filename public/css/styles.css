@@ -287,3 +287,58 @@ button:hover {
   color: white;
 }
 
+body.light-mode {
+  background-color: #f8f9fa;
+  color: #343a40;
+}
+
+body.light-mode .sidebar {
+  background-color: #343a40;
+  color: white;
+}
+
+body.light-mode .menu-item:hover {
+  background-color: #495057;
+}
+
+body.light-mode .main-content {
+  background-color: #f8f9fa;
+}
+
+body.light-mode .item-card {
+  background: white;
+  color: #343a40;
+}
+
+body.light-mode .console {
+  background-color: #f0f0f0;
+  color: #343a40;
+}
+
+body.dark-mode {
+  background-color: #343a40;
+  color: #f8f9fa;
+}
+
+body.dark-mode .sidebar {
+  background-color: #495057;
+  color: #f8f9fa;
+}
+
+body.dark-mode .menu-item:hover {
+  background-color: #6c757d;
+}
+
+body.dark-mode .main-content {
+  background-color: #343a40;
+}
+
+body.dark-mode .item-card {
+  background: #495057;
+  color: #f8f9fa;
+}
+
+body.dark-mode .console {
+  background-color: #6c757d;
+  color: #f8f9fa;
+}
