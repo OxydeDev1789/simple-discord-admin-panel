@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const popup = document.getElementById('popup');
   const popupContent = document.getElementById('popup-content');
   const dmallStatus = document.getElementById('dmall-status');
+  const themeToggle = document.getElementById('theme-toggle');
+  
   let currentAction = null;
   let currentServer = null;
   let currentUser = null;
@@ -47,6 +49,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    document.body.classList.toggle('light-mode');
+  });
+
+  document.getElementById('logout').addEventListener('click', () => {
+    localStorage.removeItem('discordBotToken'); 
+    window.location.href = '/'; 
+  });
+
   function connectBot(token) {
     fetch('/api/connect', {
       method: 'POST',
@@ -65,6 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('login-container').style.display = 'none';
         document.getElementById('dashboard-container').style.display = 'flex';
         setupWebSocket(token);
+        fetchUsers();
+        fetchRoles();
+        fetchServers();
       }
     })
     .catch(error => console.error('Error connecting bot:', error));
@@ -482,14 +497,14 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .then(response => response.json())
       .then(data => {
-        if (data.message.includes('successfully')) {
-          alert(`User ${currentUser.user.username}#${currentUser.user.discriminator} has been ${actionText}!`);
-          if (currentAction === 'leave') fetchServers();
+        if (data.message.includes('Succès')) {
+          alert(`User ${currentUser.user.username}#${currentUser.user.discriminator} a bien été ${actionText}!`);
+          if (currentAction === 'Quitter') fetchServers();
         } else {
-          alert(`Failed to ${currentAction} user ${currentUser.user.username}#${currentUser.user.discriminator}.`);
+          alert(`Echec de ${currentAction} utilisateur ${currentUser.user.username}#${currentUser.user.discriminator}.`);
         }
       })
-      .catch(error => console.error(`Error ${currentAction}ing user:`, error));
+      .catch(error => console.error(`Erreur ${currentAction}ing utilisateur:`, error));
     }
     closePopup();
   }
@@ -510,13 +525,13 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(response => response.json())
     .then(data => {
-      if (data.message === 'User renamed successfully') {
-        alert(`User ${user.user.username}#${user.user.discriminator} has been renamed to ${newName}!`);
+      if (data.message === 'Utilisateur renommé avec succès') {
+        alert(`User ${user.user.username}#${user.user.discriminator} a bien été renommer en ${newName}!`);
       } else {
-        alert(`Failed to rename user ${user.user.username}#${user.user.discriminator}.`);
+        alert(`Echec pour renommer l'utilisateur ${user.user.username}#${user.user.discriminator}.`);
       }
     })
-    .catch(error => console.error('Error renaming user:', error));
+    .catch(error => console.error('Erreur pour renommer :', error));
     closePopup();
   }
 
@@ -537,12 +552,12 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(response => response.json())
     .then(data => {
       if (data.message === 'User renamed successfully') {
-        alert(`User ${user.user.username}#${user.user.discriminator}'s nickname has been reset!`);
+        alert(`User ${user.user.username}#${user.user.discriminator}'s surnom a bien été réinitialisé !`);
       } else {
-        alert(`Failed to reset nickname for user ${user.user.username}#${user.user.discriminator}.`);
+        alert(`Echec pour la réinitialisation du pseudo de ${user.user.username}#${user.user.discriminator}.`);
       }
     })
-    .catch(error => console.error('Error resetting nickname:', error));
+    .catch(error => console.error('Echec de réinitialisation du pseudo :', error));
     closePopup();
   }
 
@@ -561,14 +576,14 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(response => response.json())
     .then(data => {
-      if (data.message === 'Messages sent') {
-        alert(`Message sent to all members of ${server.name}`);
+      if (data.message === 'Messages Envoyés') {
+        alert(`Message envoyé à tout les membres de ${server.name}`);
         dmallStatus.innerHTML = '<h3>DMALL en cours...</h3>';
       } else {
-        alert(`Failed to send messages to all members of ${server.name}`);
+        alert(`Echec de l'envoie a tout les membres de ${server.name}`);
       }
     })
-    .catch(error => console.error('Error sending messages:', error));
+    .catch(error => console.error('Erreur envoie de messages:', error));
     closePopup();
   }
 
@@ -587,14 +602,14 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(response => response.json())
     .then(data => {
-      if (data.message === 'Role deleted successfully') {
-        alert(`Role ${role.name} has been deleted!`);
+      if (data.message === 'Role supprimer avec succès ') {
+        alert(`Role ${role.name} a bien été supprimé !`);
         fetchRoles();
       } else {
-        alert(`Failed to delete role ${role.name}.`);
+        alert(`Echec pour supprimer le role de ${role.name}.`);
       }
     })
-    .catch(error => console.error('Error deleting role:', error));
+    .catch(error => console.error('Echec suppression de role :', error));
     closePopup();
   }
 
@@ -614,14 +629,14 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(response => response.json())
     .then(data => {
-      if (data.message === 'Role renamed successfully') {
-        alert(`Role ${role.name} has been renamed to ${newName}!`);
+      if (data.message === 'Role renommé avec succès ') {
+        alert(`Role ${role.name} A bien été renomé en ${newName}!`);
         fetchRoles();
       } else {
-        alert(`Failed to rename role ${role.name}.`);
+        alert(`Echec pour renommer le role ${role.name}.`);
       }
     })
-    .catch(error => console.error('Error renaming role:', error));
+    .catch(error => console.error('Echec pour renommer le role:', error));
     closePopup();
   }
 
@@ -629,34 +644,3 @@ document.addEventListener('DOMContentLoaded', () => {
     popup.classList.remove('active');
   }
 });
-
- document.getElementById('logout').addEventListener('click', () => {
-  localStorage.removeItem('discordBotToken'); 
-  window.location.href = '/'; 
-});
-
-function connectBot(token) {
-  fetch('/api/connect', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ token })
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.message === 'Invalid token') {
-      alert('Invalid token. Please try again.');
-    } else {
-      localStorage.setItem('discordBotToken', token);
-      alert(`Connecté en tant que ${data.username}#${data.discriminator}`);
-      document.getElementById('login-container').style.display = 'none';
-      document.getElementById('dashboard-container').style.display = 'flex';
-      setupWebSocket(token);
-      fetchUsers();
-      fetchRoles();
-      fetchServers();
-    }
-  })
-  .catch(error => console.error('Error connecting bot:', error));
-}
