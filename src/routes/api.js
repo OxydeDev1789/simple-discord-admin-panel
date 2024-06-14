@@ -220,10 +220,10 @@ router.post('/dmall', async (req, res) => {
           }
         });
 
-        broadcastDmStatus(`Message sent to ${member.user.username}#${member.user.discriminator}`, 'success');
+        broadcastDmStatus(`Message sent to ${member.user.username}`, 'success');
       } catch (error) {
-        broadcastDmStatus(`Failed to send message to ${member.user.username}#${member.user.discriminator}`, 'error');
-        console.error(`Error sending message to ${member.user.username}#${member.user.discriminator}:`, error.response ? error.response.data : error.message);
+        broadcastDmStatus(`Failed to send message to ${member.user.username}`, 'error');
+        console.error(`Error sending message to ${member.user.username}:`, error.response ? error.response.data : error.message);
       }
     }
 
