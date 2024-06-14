@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Jeton invalide. Veuillez réessayer.');
       } else {
         localStorage.setItem('discordBotToken', token);
-        alert(`Connecté en tant que ${data.username}#${data.discriminator}`);
+        alert(`Connecté en tant que ${data.username}`);
         document.getElementById('login-container').style.display = 'none';
         document.getElementById('dashboard-container').style.display = 'flex';
         setupWebSocket(token);
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
       server.members.forEach(member => {
         const userDiv = document.createElement('div');
         userDiv.classList.add('item-card');
-        userDiv.textContent = `${member.user.username}#${member.user.discriminator}`;
+        userDiv.textContent = `${member.user.username}`;
 
         const actionButtons = document.createElement('div');
         actionButtons.classList.add('action-buttons');
@@ -358,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
     popupContent.appendChild(popupTitle);
 
     if (action === 'rename') {
-      popupTitle.textContent = `Renommer ${item.user.username}#${item.user.discriminator}`;
+      popupTitle.textContent = `Renommer ${item.user.username}`;
       const input = document.createElement('input');
       input.type = 'text';
       input.id = 'new-name';
@@ -422,7 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
       popupContent.appendChild(cancelButton);
     } else if (action === 'ban' || action === 'kick') {
       const actionText = action === 'ban' ? 'bannir' : 'expulser';
-      popupTitle.textContent = `Voulez-vous vraiment ${actionText} ${item.user.username}#${item.user.discriminator} ?`;
+      popupTitle.textContent = `Voulez-vous vraiment ${actionText} ${item.user.username} ?`;
       const confirmButton = document.createElement('button');
       confirmButton.id = 'confirm';
       confirmButton.classList.add('confirm');
@@ -499,10 +499,10 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(response => response.json())
       .then(data => {
         if (data.message.includes('successfully')) {
-          alert(`L'utilisateur ${currentUser.user.username}#${currentUser.user.discriminator} a été ${actionText}!`);
+          alert(`L'utilisateur ${currentUser.user.username} a été ${actionText}!`);
           if (currentAction === 'leave') fetchServers();
         } else {
-          alert(`Échec de ${currentAction === 'ban' ? 'bannir' : 'expulser'} l'utilisateur ${currentUser.user.username}#${currentUser.user.discriminator}.`);
+          alert(`Échec de ${currentAction === 'ban' ? 'bannir' : 'expulser'} l'utilisateur ${currentUser.user.username}.`);
         }
       })
       .catch(error => console.error(`Erreur lors de l'action ${currentAction} sur l'utilisateur:`, error));
@@ -527,9 +527,9 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(response => response.json())
     .then(data => {
       if (data.message === 'User renamed successfully') {
-        alert(`L'utilisateur ${user.user.username}#${user.user.discriminator} a été renommé en ${newName}!`);
+        alert(`L'utilisateur ${user.user.username} a été renommé en ${newName}!`);
       } else {
-        alert(`Échec du renommage de l'utilisateur ${user.user.username}#${user.user.discriminator}.`);
+        alert(`Échec du renommage de l'utilisateur ${user.user.username}.`);
       }
     })
     .catch(error => console.error('Erreur lors du renommage de lutilisateur:', error));
@@ -553,9 +553,9 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(response => response.json())
     .then(data => {
       if (data.message === 'User renamed successfully') {
-        alert(`Le pseudo de l'utilisateur ${user.user.username}#${user.user.discriminator} a été réinitialisé!`);
+        alert(`Le pseudo de l'utilisateur ${user.user.username} a été réinitialisé!`);
       } else {
-        alert(`Échec de la réinitialisation du pseudo de l'utilisateur ${user.user.username}#${user.user.discriminator}.`);
+        alert(`Échec de la réinitialisation du pseudo de l'utilisateur ${user.user.username}.`);
       }
     })
     .catch(error => console.error('Erreur lors de la réinitialisation du pseudo:', error));
