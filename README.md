@@ -12,8 +12,6 @@ Le Panneau d'Administration Discord est une application web conçue pour gérer 
 
 ## 🚀 Installation
 
-1. **Clonez le dépôt sur votre machine locale :**
-
    ```sh
    git clone https://github.com/yaeteam/simple-discord-admin-panel.git
    cd discord-admin-panel
@@ -25,4 +23,4 @@ Le serveur démarrera par défaut sur le port 3000. Ouvrez votre navigateur et n
 
 
 ````
-![Admin Panel GIF](./assets/admin-panel.gif)
+![Admin Panel GIF](./panel.gif)
