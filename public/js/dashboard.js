@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const section = document.getElementById(item.getAttribute('data-section'));
       sections.forEach(sec => sec.classList.remove('active'));
       section.classList.add('active');
+      
       // Charger les données en fonction de la section
       if (item.getAttribute('data-section') === 'users') {
         if (!usersData) {
@@ -70,19 +71,16 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(response => response.json())
     .then(data => {
       if (data.message === 'Invalid token') {
-        alert('Invalid token. Please try again.');
+        alert('Jeton invalide. Veuillez réessayer.');
       } else {
         localStorage.setItem('discordBotToken', token);
         alert(`Connecté en tant que ${data.username}#${data.discriminator}`);
         document.getElementById('login-container').style.display = 'none';
         document.getElementById('dashboard-container').style.display = 'flex';
         setupWebSocket(token);
-        fetchUsers();
-        fetchRoles();
-        fetchServers();
       }
     })
-    .catch(error => console.error('Error connecting bot:', error));
+    .catch(error => console.error('Erreur de connexion du bot:', error));
   }
 
   function setupWebSocket(token) {
@@ -115,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
       usersData = data;
       displayUsers(usersData);
     })
-    .catch(error => console.error('Error fetching users:', error));
+    .catch(error => console.error('Erreur lors de la récupération des utilisateurs:', error));
   }
 
   function displayUsers(data) {
@@ -153,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
       searchBar.classList.add('search-bar');
       const searchInput = document.createElement('input');
       searchInput.type = 'text';
-      searchInput.placeholder = 'Rechercher un utilisateurs';
+      searchInput.placeholder = 'Rechercher un utilisateur';
       searchInput.addEventListener('input', () => {
         const searchTerm = searchInput.value.toLowerCase();
         serverContent.querySelectorAll('.item-card').forEach(card => {
@@ -179,17 +177,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const banButton = document.createElement('button');
         banButton.classList.add('ban-button');
-        banButton.textContent = 'Ban';
+        banButton.textContent = 'Bannir';
         banButton.addEventListener('click', () => showPopup('ban', member));
 
         const kickButton = document.createElement('button');
         kickButton.classList.add('kick-button');
-        kickButton.textContent = 'Kick';
+        kickButton.textContent = 'Expulser';
         kickButton.addEventListener('click', () => showPopup('kick', member));
 
         const renameButton = document.createElement('button');
         renameButton.classList.add('rename-button');
-        renameButton.textContent = 'Rename';
+        renameButton.textContent = 'Renommer';
         renameButton.addEventListener('click', () => showPopup('rename', member));
 
         actionButtons.appendChild(banButton);
@@ -207,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function fetchRoles() {
+    console.log('Fetching roles...');
     const token = localStorage.getItem('discordBotToken');
     fetch('/api/roles', {
       headers: {
@@ -215,13 +214,15 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(response => response.json())
     .then(data => {
+      console.log('Roles fetched:', data);
       rolesData = data;
       displayRoles(rolesData);
     })
-    .catch(error => console.error('Error fetching roles:', error));
+    .catch(error => console.error('Erreur lors de la récupération des rôles:', error));
   }
 
   function displayRoles(data) {
+    console.log('Displaying roles:', data);
     const rolesList = document.getElementById('roles-list');
     rolesList.innerHTML = '';
     const servers = {};
@@ -282,12 +283,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete-button');
-        deleteButton.textContent = 'Delete';
+        deleteButton.textContent = 'Supprimer';
         deleteButton.addEventListener('click', () => showPopup('deleteRole', role));
 
         const renameButton = document.createElement('button');
         renameButton.classList.add('rename-button');
-        renameButton.textContent = 'Rename';
+        renameButton.textContent = 'Renommer';
         renameButton.addEventListener('click', () => showPopup('renameRole', role));
 
         actionButtons.appendChild(deleteButton);
@@ -315,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
       serversData = data;
       displayServers(serversData);
     })
-    .catch(error => console.error('Error fetching servers:', error));
+    .catch(error => console.error('Erreur lors de la récupération des serveurs:', error));
   }
 
   function displayServers(data) {
@@ -420,7 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
       popupContent.appendChild(confirmButton);
       popupContent.appendChild(cancelButton);
     } else if (action === 'ban' || action === 'kick') {
-      const actionText = action === 'ban' ? 'ban' : 'kick';
+      const actionText = action === 'ban' ? 'bannir' : 'expulser';
       popupTitle.textContent = `Voulez-vous vraiment ${actionText} ${item.user.username}#${item.user.discriminator} ?`;
       const confirmButton = document.createElement('button');
       confirmButton.id = 'confirm';
@@ -482,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentAction && (currentUser || currentServer)) {
       const token = localStorage.getItem('discordBotToken');
       const actionEndpoint = currentAction === 'ban' ? '/api/ban' : currentAction === 'kick' ? '/api/kick' : currentAction === 'leave' ? '/api/leave' : null;
-      const actionText = currentAction === 'ban' ? 'banned' : currentAction === 'kick' ? 'kicked' : 'left';
+      const actionText = currentAction === 'ban' ? 'banni' : currentAction === 'kick' ? 'expulsé' : 'quitté';
 
       fetch(actionEndpoint, {
         method: 'POST',
@@ -497,14 +498,14 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .then(response => response.json())
       .then(data => {
-        if (data.message.includes('Succès')) {
-          alert(`User ${currentUser.user.username}#${currentUser.user.discriminator} a bien été ${actionText}!`);
-          if (currentAction === 'Quitter') fetchServers();
+        if (data.message.includes('successfully')) {
+          alert(`L'utilisateur ${currentUser.user.username}#${currentUser.user.discriminator} a été ${actionText}!`);
+          if (currentAction === 'leave') fetchServers();
         } else {
-          alert(`Echec de ${currentAction} utilisateur ${currentUser.user.username}#${currentUser.user.discriminator}.`);
+          alert(`Échec de ${currentAction === 'ban' ? 'bannir' : 'expulser'} l'utilisateur ${currentUser.user.username}#${currentUser.user.discriminator}.`);
         }
       })
-      .catch(error => console.error(`Erreur ${currentAction}ing utilisateur:`, error));
+      .catch(error => console.error(`Erreur lors de l'action ${currentAction} sur l'utilisateur:`, error));
     }
     closePopup();
   }
@@ -525,13 +526,13 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(response => response.json())
     .then(data => {
-      if (data.message === 'Utilisateur renommé avec succès') {
-        alert(`User ${user.user.username}#${user.user.discriminator} a bien été renommer en ${newName}!`);
+      if (data.message === 'User renamed successfully') {
+        alert(`L'utilisateur ${user.user.username}#${user.user.discriminator} a été renommé en ${newName}!`);
       } else {
-        alert(`Echec pour renommer l'utilisateur ${user.user.username}#${user.user.discriminator}.`);
+        alert(`Échec du renommage de l'utilisateur ${user.user.username}#${user.user.discriminator}.`);
       }
     })
-    .catch(error => console.error('Erreur pour renommer :', error));
+    .catch(error => console.error('Erreur lors du renommage de lutilisateur:', error));
     closePopup();
   }
 
@@ -552,12 +553,12 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(response => response.json())
     .then(data => {
       if (data.message === 'User renamed successfully') {
-        alert(`User ${user.user.username}#${user.user.discriminator}'s surnom a bien été réinitialisé !`);
+        alert(`Le pseudo de l'utilisateur ${user.user.username}#${user.user.discriminator} a été réinitialisé!`);
       } else {
-        alert(`Echec pour la réinitialisation du pseudo de ${user.user.username}#${user.user.discriminator}.`);
+        alert(`Échec de la réinitialisation du pseudo de l'utilisateur ${user.user.username}#${user.user.discriminator}.`);
       }
     })
-    .catch(error => console.error('Echec de réinitialisation du pseudo :', error));
+    .catch(error => console.error('Erreur lors de la réinitialisation du pseudo:', error));
     closePopup();
   }
 
@@ -576,14 +577,14 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(response => response.json())
     .then(data => {
-      if (data.message === 'Messages Envoyés') {
-        alert(`Message envoyé à tout les membres de ${server.name}`);
+      if (data.message === 'Messages sent') {
+        alert(`Message envoyé à tous les membres de ${server.name}`);
         dmallStatus.innerHTML = '<h3>DMALL en cours...</h3>';
       } else {
-        alert(`Echec de l'envoie a tout les membres de ${server.name}`);
+        alert(`Échec de l'envoi des messages à tous les membres de ${server.name}`);
       }
     })
-    .catch(error => console.error('Erreur envoie de messages:', error));
+    .catch(error => console.error('Erreur lors de envoi des messages:', error));
     closePopup();
   }
 
@@ -602,14 +603,14 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(response => response.json())
     .then(data => {
-      if (data.message === 'Role supprimer avec succès ') {
-        alert(`Role ${role.name} a bien été supprimé !`);
+      if (data.message === 'Role deleted successfully') {
+        alert(`Le rôle ${role.name} a été supprimé!`);
         fetchRoles();
       } else {
-        alert(`Echec pour supprimer le role de ${role.name}.`);
+        alert(`Échec de la suppression du rôle ${role.name}.`);
       }
     })
-    .catch(error => console.error('Echec suppression de role :', error));
+    .catch(error => console.error('Erreur lors de la suppression du rôle:', error));
     closePopup();
   }
 
@@ -629,14 +630,14 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(response => response.json())
     .then(data => {
-      if (data.message === 'Role renommé avec succès ') {
-        alert(`Role ${role.name} A bien été renomé en ${newName}!`);
+      if (data.message === 'Role renamed successfully') {
+        alert(`Le rôle ${role.name} a été renommé en ${newName}!`);
         fetchRoles();
       } else {
-        alert(`Echec pour renommer le role ${role.name}.`);
+        alert(`Échec du renommage du rôle ${role.name}.`);
       }
     })
-    .catch(error => console.error('Echec pour renommer le role:', error));
+    .catch(error => console.error('Erreur lors du renommage du rôle:', error));
     closePopup();
   }
 
