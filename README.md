@@ -15,7 +15,7 @@ Le Panneau d'Administration Discord est une application web conçue pour gérer 
 1. **Clonez le dépôt sur votre machine locale :**
 
    ```sh
-   git clone https://github.com/votre-nom-utilisateur/discord-admin-panel.git
+   git clone https://github.com/yaeteam/simple-discord-admin-panel.git
    cd discord-admin-panel
    npm install
    npm start
