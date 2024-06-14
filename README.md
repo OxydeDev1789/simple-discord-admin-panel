@@ -17,3 +17,8 @@ Le Panneau d'Administration Discord est une application web conçue pour gérer 
    ```sh
    git clone https://github.com/votre-nom-utilisateur/discord-admin-panel.git
    cd discord-admin-panel
+   npm install
+   npm start
+
+   ```sh
+   Le serveur démarrera par défaut sur le port 3000. Ouvrez votre navigateur et naviguez vers http://localhost:3000.
